@@ -1,0 +1,315 @@
+#include <iostream>
+#include <complex>
+#include <math.h>
+#include <cstdlib>
+#include <string>
+
+using namespace std;
+
+class Complex
+{
+    private : float real,imj;
+
+    public:
+        void SetReal(float r)
+        {
+            real = r;
+        }
+        float GetReal ()
+        {
+            return real;
+        }
+        void SetImj (float i)
+        {
+            imj = i;
+        }
+        float GetImj ()
+        {
+            return imj;
+        }
+        void SetComplex ( float r, float i)
+        {
+            real=r;
+            imj=i;
+        }
+        void ReadComplex ( string s)
+        {
+            int length =s.length();
+            string d="";
+            real=0; imj=0;
+            int flag1=0, flag2=0,flag3=0;
+            for( int i=0; i<length; i++)
+            {
+                if ((s[i]=='-'&& i==0) || (s[i]!='+' && s[i]!= 'i' && s[i]!='-'))
+                {
+                    d=d+s[i];
+                }
+                if (s[i]=='+' || (s[i]=='-'  && i!=0))
+                {
+                    if (s[i]=='-')
+                    {
+                        flag3=1;
+                    }
+                    real = atof(d.c_str());
+                    flag1=1;
+                    d="";
+                }
+                if (s[i]=='i')
+                {
+                    imj=atof(d.c_str());
+                    if (flag3==1)
+                    {
+                        imj=imj*-1;
+                        flag3=0;
+                    }
+                    d="";
+                    flag2=1;
+                }
+
+            }
+            if(flag1==0 && flag2 ==0)
+            {
+                real = atof(d.c_str());
+            }
+        }
+
+        void Add(Complex Comp1,Complex Comp2)
+        {
+            real=Comp1.real+Comp2.real;
+            imj=Comp1.imj+Comp2.imj;
+
+
+        }
+        void Sub(Complex Comp3,Complex Comp4)
+        {
+            real=Comp3.real-Comp4.real;
+            imj=Comp3.imj-Comp4.imj;
+        }
+        void Multiple (Complex Comp5,Complex Comp6)
+        {
+            real=(Comp5.real*Comp6.real)-(Comp5.imj*Comp6.imj);
+            imj=(Comp5.real*Comp6.imj)+(Comp5.imj*Comp6.real);
+        }
+        void PrintComplex()
+        {
+            if (real==0)
+            {
+                cout<<imj<<"i";
+            }
+           else if (imj==0)
+            {
+                cout<<real;
+            }
+           else if (real!=0 && imj>0)
+            {
+                cout<<real <<"+"<<imj<<"i";
+            }
+           else if (real!=0 && imj<0)
+            {
+                cout<<real<<imj<<"i";
+            }
+        }
+};
+
+
+
+int main ()
+{
+int rows1 = 0, coloumns1 = 0;
+   	string matrix1;
+   	string array_of_strings1[100][100];
+   	int length1 = matrix1.length();
+
+
+        getline(cin, matrix1);
+
+
+    	for (int i = 1; i <= matrix1.length(); i++)
+   	  {
+   		if (matrix1[i] == ' ')
+   		{
+   			coloumns1++;
+   		i++;
+
+   		}
+   		if (matrix1[i] == ';')
+   		{
+   			rows1++;
+   			i++;
+   		coloumns1 = 0;
+   	}
+   		if (matrix1[i] == ']')
+   			break;
+
+   		array_of_strings1[rows1][coloumns1] += matrix1[i];
+   	}
+
+
+
+   	Complex mat1[100][100];
+
+   	for (int i = 0; i <= rows1; i++)
+   	{
+   		for (int j = 0; j <= coloumns1; j++)
+   		{
+   			mat1[i][j].ReadComplex(array_of_strings1[i][j]);
+   		}
+   	}
+
+
+      string operator1;
+   	getline(cin, operator1);
+
+
+   	int rows2 = 0, coloumns2 = 0;
+   	string matrix2;
+    	string array_of_strings2[100][100];
+    	int length2 = matrix2.length();
+
+
+        getline(cin, matrix2);
+
+
+    	for (int i = 1; i <= matrix2.length(); i++)
+    	{
+    		if (matrix2[i] == ' ')
+    		{
+    			coloumns2++;
+    			i++;
+
+    		}
+    		if (matrix2[i] == ';')
+    		{
+    			rows2++;
+    			i++;
+    			coloumns2 = 0;
+    		}
+    		if (matrix2[i] == ']')
+    			break;
+
+    		array_of_strings2[rows2][coloumns2] += matrix2[i];
+    	}
+
+
+
+    	Complex mat2[100][100];
+
+    	for (int i = 0; i <= rows2; i++)
+    	{
+    		for (int j = 0; j <= coloumns2; j++)
+    		{
+    			mat2[i][j].ReadComplex(array_of_strings2[i][j]);
+    		}
+    	}
+
+
+
+   	Complex sum[100][100];
+
+   	if (operator1[0] == '+')
+   	{
+         if (rows1 != rows2 || coloumns1 != coloumns2)
+   		{
+   			cout << "ERROR";
+   			return 0;
+   		}
+            if (rows1 == rows2 && coloumns1 == coloumns2)
+               {
+
+   			for (int i = 0; i <= rows1; i++)
+
+   			{
+   				for (int j = 0; j <= coloumns1; j++)
+   				{
+   					sum[i][j].Add( mat1[i][j] , mat2[i][j]);
+   				}
+
+            }
+                for (int i=0; i<= rows1; i++)
+                {
+                   for (int j=0; j<= coloumns1; j++)
+                   {
+                    sum[i][j].PrintComplex();
+                    cout<< " ";
+                   }
+                   cout << ";";
+   		      	}
+              }
+   	}
+
+
+   	Complex sub[100][100];
+
+   	if (operator1[0] == '-')
+   	{
+             if (rows1 != rows2 || coloumns1 != coloumns2)
+   		{
+   			cout << "ERROR";
+   			return 0;
+   		}
+        if (rows1 == rows2 && coloumns1 == coloumns2)
+        {
+   			for (int i = 0; i <= rows1; i++)
+   			{
+   				for (int j = 0; j <= coloumns1; j++)
+   				{
+   					sub[i][j].Sub( mat1[i][j] , mat2[i][j]);
+        }
+   			}
+       for (int i=0; i<= rows1; i++)
+       {
+         for (int j=0; j<= coloumns1; j++)
+         {
+             sub[i][j].PrintComplex();
+             cout<< " ";
+         }
+         cout << ";";
+       }
+
+   	}
+   	}
+
+
+   	Complex multiple[100][100];
+   	if (operator1[0] == '*')
+       {
+
+
+   				if (rows2 != coloumns1)
+   		{
+   			cout << "ERROR";
+   			return 0;
+   		}
+
+   		if (rows2 == coloumns1)
+           {
+
+   			for (int n = 0; n <= rows1; n++)
+   			{
+   				for (int m = 0; m <= coloumns2; m++)
+   				{
+   					for (int k = 0; k <= coloumns1; k++)
+   					{
+   						Complex M1;
+   						M1.Multiple(mat1[n][k] , mat2[k][m]);
+   						multiple[n][m] .Add( multiple[n][m] , M1);
+   					}
+   				}
+   			}
+   			for (int i=0; i<= rows1; i++)
+               {
+                   for(int j=0; j<= coloumns2; j++)
+                   {
+                    multiple[i][j].PrintComplex();
+                    cout<< " ";
+                   }
+                   cout<< ";";
+               }
+
+       }
+       }
+
+
+   	return 0;
+
+}
