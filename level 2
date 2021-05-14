@@ -1,0 +1,282 @@
+#include <iostream>
+#include <string>
+#include <cstdlib>
+#include <sstream>
+#include <math.h>
+ using namespace std;
+
+ float determinant( float matrix[100][100], int rows) {
+   float det = 0;
+   float submatrix[100][100];
+   if (rows== 2)
+      return ((matrix[0][0] * matrix[1][1]) - (matrix[1][0] * matrix[0][1]));
+   else {
+      for (int x = 0; x < rows; x++) {
+            int ci = 0;
+            for (int i = 1; i < rows; i++) {
+               int cj = 0;
+               for (int j = 0; j < rows; j++) {
+                  if (j == x)
+                  continue;
+                  submatrix[ci][cj] = matrix[i][j];
+                  cj++;
+               }
+               ci++;
+            }
+            det = det + (pow(-1, x) * matrix[0][x] * determinant( submatrix, rows- 1 ));
+      }
+   }
+   return det;
+}
+
+     int main()
+     {
+   	int rows1 = 0, coloumns1 = 0;
+   	string matrix1;
+   	string array_of_strings1[100][100];
+   	int length1 = matrix1.length();
+    int c;
+
+        getline(cin, matrix1);
+
+
+    	for (int i = 1; i <=matrix1.length(); i++)
+   	  {
+   		if (matrix1[i] == ' ')
+   		{
+   			coloumns1++;
+   		i++;
+
+   		}
+   		if (matrix1[i] == ';')
+   		{
+   			if (rows1==0)
+   			{
+   			    c=coloumns1;
+   			}
+   			if(c=coloumns1)
+   			{
+   			rows1++;
+   			i++;
+   		coloumns1 = 0;
+   			}
+   			else
+   			{
+   			    cout<<"ERROR";
+   			    return 0;
+   			}
+   	   }
+   		if (matrix1[i] == ']' && c==coloumns1)
+   			break;
+   		array_of_strings1[rows1][coloumns1] += matrix1[i];
+   	}
+if (c!=coloumns1)
+{
+    cout<<"ERROR";
+    return 0;
+}
+
+
+   	float mat1[100][100];
+
+   	for (int i = 0; i <= rows1; i++)
+   	{
+   		for (int j = 0; j <= coloumns1; j++)
+   		{
+   			mat1[i][j] = atof((array_of_strings1[i][j]).c_str());
+
+   		}
+   	}
+
+   	string operator1;
+
+   	getline(cin,operator1);
+
+   	float power [100][100];
+   	float multiple[100][100];
+
+   	if( operator1[0] == '^')
+   	{
+   	    float p;
+        cin >>p;
+
+   	    	if (rows1 != coloumns1)
+   		{
+   			cout << "ERROR";
+   			return 0;
+   		}
+
+   		if (rows1 == coloumns1)
+        {
+            for(int i=0; i<= rows1; i++)
+            {
+                for(int j=0; j<= coloumns1; j++)
+                {
+                    multiple[i][j]=mat1[i][j];
+                }
+            }
+           for (int i=0; i < p-1; i++)
+           {
+   	          for (int n = 0; n <= rows1; n++)
+   			{
+   				for (int m = 0; m <= coloumns1; m++)
+   				{
+   				    for (int k = 0; k<= coloumns1; k++)
+   				    {
+
+   						power[n][m] = power[n][m] + mat1[n][k] * multiple[k][m];
+
+                      }
+   				}
+   			}
+
+   				for(int o=0; o<=rows1; o++ )
+                {
+                    for( int h=0; h<=coloumns1; h++)
+                    {
+
+
+                    multiple[o][h] = power[o][h];
+                    power[o][h]=0;
+
+                }
+              }
+            }
+           }
+
+
+   	   for(int i =0; i<=rows1 ; i++)
+   	  {
+   	    for(int j =0; j<=coloumns1 ; j++)
+   	    {
+   	    cout << multiple[i][j]<<" ";
+   	    }
+   	    cout << ";";
+      }
+
+   	}
+
+   	float transpose[100][100];
+
+   	if ( operator1[0] == 'T')
+    {
+
+
+         int k;
+        k= rows1;
+        rows1 = coloumns1;
+        coloumns1 = k;
+
+
+       for(int i=0; i<=rows1; i++)
+       {
+           for(int j=0; j<=coloumns1; j++)
+           {
+               transpose[i][j]=mat1[j][i];
+           }
+       }
+        for(int i =0; i<=rows1 ; i++)
+   	  {
+   	    for(int j =0; j<=coloumns1 ; j++)
+   	    {
+   	    cout << transpose[i][j]<<" ";
+   	    }
+   	    cout << ";";
+      }
+    }
+      if(operator1[0]=='D')
+      {
+          float x;
+          if (rows1 == coloumns1)
+          {
+          x=determinant(mat1,rows1+1);
+          cout<<x;
+          }
+          else
+          {
+              cout<<"ERROR";
+          }
+      }
+
+      if (operator1[0]=='I')
+      {
+           float d;
+           int si=0,sj=0;
+           float subMat1[100][100],matI[100][100];
+          if (rows1 == coloumns1)
+          {
+          d=determinant(mat1,rows1);
+          }
+          else
+          {
+              cout<<"ERROR";
+          }
+          if (d==0)
+          {
+              cout<<"ERROR";
+              return 0;
+          }
+          d=1/d;
+          for(int i=0;i<=rows1;i++)
+          {
+              for(int j=0;j<=rows1;j++)
+              {
+                  for(int f=0;f<=rows1;f++)
+                  {
+                      sj=0;
+                      if(f==i)
+                      {
+                          continue;
+                      }
+                      for(int m=0;m<=rows1;m++)
+                      {
+                            if (m==j)
+                            {
+                                continue;
+                            }
+                            subMat1[si][sj]=mat1[f][m];
+                            sj++;
+                      }
+                      si++;
+                  }
+                  si=0;
+                  sj=0;
+                  matI[i][j]=pow(-1,i+j)*determinant(subMat1,rows1)*d;
+              }
+          }
+
+
+        int k;
+        k= rows1;
+        rows1 = coloumns1;
+        coloumns1 = k;
+
+
+       for(int i=0; i<=rows1; i++)
+       {
+           for(int j=0; j<=coloumns1; j++)
+           {
+               transpose[i][j]=matI[j][i];
+           }
+       }
+
+
+           for(int i =0; i<=rows1 ; i++)
+   	  {
+   	    for(int j =0; j<=coloumns1 ; j++)
+   	    {
+   	    cout << transpose[i][j]<<" ";
+   	    }
+   	    cout << ";";
+      }
+
+
+
+      }
+
+
+
+
+
+    return 0;
+   	}
