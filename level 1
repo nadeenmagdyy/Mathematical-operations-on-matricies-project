@@ -1,0 +1,201 @@
+#include <iostream>
+#include <string>
+#include <cstdlib>
+#include <sstream>
+ using namespace std;
+
+     int main()
+     {
+   	int rows1 = 0, coloumns1 = 0;
+   	string matrix1;
+   	string array_of_strings1[100][100];
+   	int length1 = matrix1.length();
+
+
+        getline(cin, matrix1);
+
+
+    	for (int i = 1; i <= matrix1.length(); i++)
+   	  {
+   		if (matrix1[i] == ' ')
+   		{
+   			coloumns1++;
+   		i++;
+
+   		}
+   		if (matrix1[i] == ';')
+   		{
+   			rows1++;
+   			i++;
+   		coloumns1 = 0;
+   	}
+   		if (matrix1[i] == ']')
+   			break;
+
+   		array_of_strings1[rows1][coloumns1] += matrix1[i];
+   	}
+
+
+
+   	float mat1[100][100];
+
+   	for (int i = 0; i <= rows1; i++)
+   	{
+   		for (int j = 0; j <= coloumns1; j++)
+   		{
+   			mat1[i][j] = atof((array_of_strings1[i][j]).c_str());
+
+   		}
+   	}
+
+
+      string operator1;
+   	getline(cin, operator1);
+
+
+   	int rows2 = 0, coloumns2 = 0;
+   	string matrix2;
+    	string array_of_strings2[100][100];
+    	int length2 = matrix2.length();
+
+
+        getline(cin, matrix2);
+
+
+    	for (int i = 1; i <= matrix2.length(); i++)
+    	{
+    		if (matrix2[i] == ' ')
+    		{
+    			coloumns2++;
+    			i++;
+
+    		}
+    		if (matrix2[i] == ';')
+    		{
+    			rows2++;
+    			i++;
+    			coloumns2 = 0;
+    		}
+    		if (matrix2[i] == ']')
+    			break;
+
+    		array_of_strings2[rows2][coloumns2] += matrix2[i];
+    	}
+
+
+
+    	float mat2[100][100];
+
+    	for (int i = 0; i <= rows2; i++)
+    	{
+    		for (int j = 0; j <= coloumns2; j++)
+    		{
+    			mat2[i][j] = atof((array_of_strings2[i][j]).c_str());
+
+    		}
+    	}
+
+
+
+   	float sum[100][100];
+
+   	if (operator1[0] == '+')
+   	{
+         if (rows1 != rows2 || coloumns1 != coloumns2)
+   		{
+   			cout << "ERROR";
+   			return 0;
+   		}
+            if (rows1 == rows2 && coloumns1 == coloumns2)
+               {
+
+   			for (int i = 0; i <= rows1; i++)
+
+   			{
+   				for (int j = 0; j <= coloumns1; j++)
+   				{
+   					sum[i][j] = mat1[i][j] + mat2[i][j];
+   				}
+
+            }
+                for (int i=0; i<= rows1; i++)
+                {
+                   for (int j=0; j<= coloumns1; j++)
+                   {
+                     cout << sum[i][j]<< " ";
+                   }
+                   cout << ";";
+   		      	}
+              }
+   	}
+
+
+   	float sub[100][100];
+
+   	if (operator1[0] == '-')
+   	{
+             if (rows1 != rows2 || coloumns1 != coloumns2)
+   		{
+   			cout << "ERROR";
+   			return 0;
+   		}
+        if (rows1 == rows2 && coloumns1 == coloumns2)
+        {
+   			for (int i = 0; i <= rows1; i++)
+   			{
+   				for (int j = 0; j <= coloumns1; j++)
+   				{
+   					sub[i][j] = mat1[i][j] - mat2[i][j];
+        }
+   			}
+       for (int i=0; i<= rows1; i++)
+       {
+         for (int j=0; j<= coloumns1; j++)
+         {
+             cout<< sub[i][j]<< " ";
+         }
+         cout << ";";
+       }
+
+   	}
+   	}
+
+
+   	float multiple[100][100];
+   	if (operator1[0] == '*')
+       {
+
+
+   				if (rows2 != coloumns1)
+   		{
+   			cout << "ERROR";
+   			return 0;
+   		}
+
+   		if (rows2 == coloumns1)
+           {
+
+   			for (int n = 0; n <= rows1; n++)
+   			{
+   				for (int m = 0; m <= coloumns2; m++)
+   				{
+   					for (int k = 0; k <= coloumns1; k++)
+   					{
+   						multiple[n][m] = multiple[n][m] + mat1[n][k] * mat2[k][m];
+   					}
+   				}
+   			}
+   			for (int i=0; i<= rows1; i++)
+               {
+                   for(int j=0; j<= coloumns2; j++)
+                   {
+                       cout<< multiple[i][j]<< " ";
+                   }
+                   cout<< ";";
+               }
+
+       }
+       }
+
+   	return 0;
+   }
